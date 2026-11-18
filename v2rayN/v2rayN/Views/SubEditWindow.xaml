@@ -32,13 +32,13 @@
             Orientation="Horizontal">
             <Button
                 x:Name="btnSave"
-                Width="100"
+                MinWidth="100"
                 Content="{x:Static resx:ResUI.TbConfirm}"
                 IsDefault="True"
                 Style="{StaticResource DefButton}" />
             <Button
                 x:Name="btnCancel"
-                Width="100"
+                MinWidth="100"
                 Margin="{StaticResource MarginLeftRight8}"
                 Content="{x:Static resx:ResUI.TbCancel}"
                 IsCancel="true"
@@ -51,6 +51,7 @@
 
             <Grid>
                 <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
                     <RowDefinition Height="Auto" />
                     <RowDefinition Height="Auto" />
                     <RowDefinition Height="Auto" />
@@ -174,7 +175,8 @@
                         HorizontalAlignment="Center"
                         VerticalAlignment="Center"
                         Style="{StaticResource ToolbarTextBlock}"
-                        Text="{x:Static resx:ResUI.LvAutoUpdateInterval}" />
+                        Text="{x:Static resx:ResUI.LvAutoUpdateInterval}"
+                        TextWrapping="Wrap" />
                 </DockPanel>
 
                 <TextBlock
@@ -231,15 +233,31 @@
                     Grid.Row="8"
                     Grid.Column="0"
                     Margin="{StaticResource Margin4}"
+                    VerticalAlignment="Center"
+                    Text="{x:Static resx:ResUI.LvPreResolve}" />
+                <ComboBox
+                    x:Name="cmbPreResolve"
+                    Grid.Row="8"
+                    Grid.Column="1"
+                    Margin="{StaticResource Margin4}"
+                    VerticalAlignment="Center"
+                    materialDesign:HintAssist.Hint="{x:Static resx:ResUI.SubUrlTips}"
+                    IsEditable="True"
+                    Style="{StaticResource DefComboBox}" />
+
+                <TextBlock
+                    Grid.Row="9"
+                    Grid.Column="0"
+                    Margin="{StaticResource Margin4}"
                     VerticalAlignment="Top"
                     Text="{x:Static resx:ResUI.LvRequestHeaders}" />
-                <StackPanel Grid.Row="8" Grid.Column="1">
+                <StackPanel Grid.Row="9" Grid.Column="1">
                     <TextBox
                         x:Name="txtRequestHeaders"
                         Margin="{StaticResource Margin4}"
                         AcceptsReturn="True"
-                        MinLines="4"
                         MaxLines="8"
+                        MinLines="4"
                         Style="{StaticResource MyOutlinedTextBox}"
                         TextWrapping="Wrap"
                         VerticalScrollBarVisibility="Auto" />
@@ -250,7 +268,7 @@
                 </StackPanel>
 
                 <TextBlock
-                    Grid.Row="9"
+                    Grid.Row="10"
                     Grid.Column="0"
                     Margin="{StaticResource Margin4}"
                     VerticalAlignment="Center"
@@ -258,7 +276,7 @@
                     Text="{x:Static resx:ResUI.LvSort}" />
                 <TextBox
                     x:Name="txtSort"
-                    Grid.Row="9"
+                    Grid.Row="10"
                     Grid.Column="1"
                     Width="100"
                     Margin="{StaticResource Margin4}"
@@ -268,7 +286,7 @@
                     Style="{StaticResource MyOutlinedTextBox}" />
 
                 <TextBlock
-                    Grid.Row="10"
+                    Grid.Row="11"
                     Grid.Column="0"
                     Margin="{StaticResource Margin4}"
                     VerticalAlignment="Center"
@@ -276,16 +294,17 @@
                     Text="{x:Static resx:ResUI.LvPrevProfile}" />
                 <TextBox
                     x:Name="txtPrevProfile"
-                    Grid.Row="10"
+                    Grid.Row="11"
                     Grid.Column="1"
                     Margin="{StaticResource Margin4}"
                     VerticalAlignment="Center"
                     materialDesign:HintAssist.Hint="{x:Static resx:ResUI.LvPrevProfileTip}"
                     AcceptsReturn="True"
-                    Style="{StaticResource MyOutlinedTextBox}" />
+                    Style="{StaticResource MyOutlinedTextBox}"
+                    ToolTip="{x:Static resx:ResUI.LvPrevProfileTip}" />
                 <Button
                     x:Name="btnSelectPrevProfile"
-                    Grid.Row="10"
+                    Grid.Row="11"
                     Grid.Column="2"
                     Margin="{StaticResource Margin4}"
                     VerticalAlignment="Center"
@@ -293,7 +312,7 @@
                     Style="{StaticResource DefButton}" />
 
                 <TextBlock
-                    Grid.Row="11"
+                    Grid.Row="12"
                     Grid.Column="0"
                     Margin="{StaticResource Margin4}"
                     VerticalAlignment="Center"
@@ -301,16 +320,17 @@
                     Text="{x:Static resx:ResUI.LvNextProfile}" />
                 <TextBox
                     x:Name="txtNextProfile"
-                    Grid.Row="11"
+                    Grid.Row="12"
                     Grid.Column="1"
                     Margin="{StaticResource Margin4}"
                     VerticalAlignment="Center"
                     materialDesign:HintAssist.Hint="{x:Static resx:ResUI.LvPrevProfileTip}"
                     AcceptsReturn="True"
-                    Style="{StaticResource MyOutlinedTextBox}" />
+                    Style="{StaticResource MyOutlinedTextBox}"
+                    ToolTip="{x:Static resx:ResUI.LvPrevProfileTip}" />
                 <Button
                     x:Name="btnSelectNextProfile"
-                    Grid.Row="11"
+                    Grid.Row="12"
                     Grid.Column="2"
                     Margin="{StaticResource Margin4}"
                     VerticalAlignment="Center"
@@ -318,7 +338,7 @@
                     Style="{StaticResource DefButton}" />
 
                 <TextBlock
-                    Grid.Row="12"
+                    Grid.Row="13"
                     Grid.Column="0"
                     Margin="{StaticResource Margin4}"
                     VerticalAlignment="Center"
@@ -326,14 +346,14 @@
                     Text="{x:Static resx:ResUI.LvCustomCoreType}" />
                 <ComboBox
                     x:Name="cmbCustomCoreType"
-                    Grid.Row="12"
+                    Grid.Row="13"
                     Grid.Column="1"
                     Margin="{StaticResource Margin4}"
                     MaxDropDownHeight="1000"
                     Style="{StaticResource MyOutlinedTextComboBox}" />
 
                 <TextBlock
-                    Grid.Row="13"
+                    Grid.Row="14"
                     Grid.Column="0"
                     Margin="{StaticResource Margin4}"
                     VerticalAlignment="Center"
@@ -341,7 +361,7 @@
                     Text="{x:Static resx:ResUI.TbPreSocksPort4Sub}" />
                 <TextBox
                     x:Name="txtPreSocksPort"
-                    Grid.Row="13"
+                    Grid.Row="14"
                     Grid.Column="1"
                     Margin="{StaticResource Margin4}"
                     HorizontalAlignment="Left"
@@ -351,7 +371,7 @@
                     ToolTip="{x:Static resx:ResUI.TipPreSocksPort}" />
 
                 <TextBlock
-                    Grid.Row="14"
+                    Grid.Row="15"
                     Grid.Column="0"
                     Margin="{StaticResource Margin4}"
                     VerticalAlignment="Center"
@@ -359,7 +379,7 @@
                     Text="{x:Static resx:ResUI.LvMemo}" />
                 <TextBox
                     x:Name="txtMemo"
-                    Grid.Row="14"
+                    Grid.Row="15"
                     Grid.Column="1"
                     Margin="{StaticResource Margin4}"
                     VerticalAlignment="Center"

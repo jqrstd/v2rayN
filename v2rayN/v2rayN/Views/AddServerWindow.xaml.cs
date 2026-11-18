@@ -145,12 +145,15 @@ public partial class AddServerWindow
                             this.Bind(ViewModel, vm => vm.SelectedSource.Password, v => v.txtSecurity14.Text).DisposeWith(currentTypeDisposables);
                             this.Bind(ViewModel, vm => vm.MasquePath, v => v.txtPath14.Text).DisposeWith(currentTypeDisposables);
                             this.Bind(ViewModel, vm => vm.MasqueHeaders, v => v.txtHeaders14.Text).DisposeWith(currentTypeDisposables);
+                            this.Bind(ViewModel, vm => vm.WarpPublicKey, v => v.txtWarpPublicKey.Text).DisposeWith(currentTypeDisposables);
+                            this.Bind(ViewModel, vm => vm.WarpPrivateKey, v => v.txtWarpPrivateKey.Text).DisposeWith(currentTypeDisposables);
+                            this.Bind(ViewModel, vm => vm.WarpAddress, v => v.txtWarpAddress.Text).DisposeWith(currentTypeDisposables);
                             break;
                     }
                 })
                 .DisposeWith(disposables);
 
-            this.Bind(ViewModel, vm => vm.SelectedSource.Network, v => v.cmbNetwork.Text).DisposeWith(disposables);
+            this.Bind(ViewModel, vm => vm.Network, v => v.cmbNetwork.Text).DisposeWith(disposables);
             this.Bind(ViewModel, vm => vm.RawHeaderType, v => v.cmbHeaderTypeRaw.Text).DisposeWith(disposables);
             this.Bind(ViewModel, vm => vm.Host, v => v.txtRequestHostRaw.Text).DisposeWith(disposables);
             this.Bind(ViewModel, vm => vm.Path, v => v.txtPathRaw.Text).DisposeWith(disposables);
@@ -201,7 +204,7 @@ public partial class AddServerWindow
             this.BindCommand(ViewModel, vm => vm.SaveCmd, v => v.btnSave).DisposeWith(disposables);
         });
 
-        WindowsUtils.SetDarkBorder(this, AppManager.Instance.Config.UiItem.CurrentTheme);
+        WindowsUtils.SetDarkBorder(this, ConfigTextHandler.Config.UiItem.CurrentTheme);
     }
 
     private void InitializeData(ProfileItem profileItem)
@@ -296,8 +299,11 @@ public partial class AddServerWindow
                 gridMasque.Visibility = Visibility.Visible;
                 sepa2.Visibility = Visibility.Collapsed;
                 gridTransport.Visibility = Visibility.Collapsed;
-                cmbFingerprint.IsEnabled = false;
-                cmbAlpn.IsEnabled = false;
+                lstStreamSecurity.Remove(string.Empty);
+                if (string.IsNullOrEmpty(profileItem.StreamSecurity))
+                {
+                    profileItem.StreamSecurity = lstStreamSecurity.First();
+                }
                 break;
         }
         cmbStreamSecurity.ItemsSource = lstStreamSecurity;
@@ -321,7 +327,7 @@ public partial class AddServerWindow
 
     private void CmbStreamSecurity_SelectionChanged(object sender, SelectionChangedEventArgs e)
     {
-        var security = cmbStreamSecurity.SelectedItem.ToString();
+        var security = cmbStreamSecurity.SelectedItem?.ToString();
         if (security == Global.StreamSecurityReality)
         {
             gridRealityMore.Visibility = Visibility.Visible;

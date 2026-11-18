@@ -62,17 +62,15 @@ public partial class CoreConfigV2rayService
                 var tunInbound =
                     JsonUtils.Deserialize<Inbounds4Ray>(EmbedUtils.GetEmbedText(Global.V2raySampleTunInbound)) ??
                     new Inbounds4Ray();
-                tunInbound.settings.name = context.IsMacOS ? $"utun{new Random().Next(99)}" : "xray_tun";
+                tunInbound.settings.name = context.IsMacOS ? $"utun{Random.Shared.Next(99)}" : "xray_tun";
                 tunInbound.settings.MTU = _config.TunModeItem.Mtu;
 
                 var address = _config.TunModeItem.IPv4Address.NullIfEmpty() ?? Global.TunIPv4Address.First();
                 tunInbound.settings.gateway = [address];
-                // Route both families into the tunnel regardless of EnableIPv6Address. That option only
-                // controls whether the interface gets an IPv6 address; leaving ::/0 out of the routing
-                // table makes IPv6 follow the system default route and bypass the tunnel entirely.
-                // A host without a global IPv6 address is the exception: it has nothing to leak,
-                // and IPv6 sent into the tunnel would have no way back out.
-                tunInbound.settings.autoSystemRoutingTable = context.HasGlobalIPv6Address
+                // Without ::/0, IPv6 bypasses the tunnel. Skip it only when the host has no global IPv6
+                // address and EnableIPv6Address is off; NAT66 hosts have only ULA addresses.
+                var routeIPv6 = _config.TunModeItem.EnableIPv6Address || context.HasGlobalIPv6Address;
+                tunInbound.settings.autoSystemRoutingTable = routeIPv6
                     ? ["0.0.0.0/0", "::/0"]
                     : ["0.0.0.0/0"];
                 if (_config.TunModeItem.EnableIPv6Address == true)
@@ -81,12 +79,12 @@ public partial class CoreConfigV2rayService
                     tunInbound.settings.gateway.Add(address6);
                 }
 
-                var bindInterface = _config.CoreBasicItem.BindInterface?.TrimEx();
+                var bindInterface = NetworkUtils.GetRealBindInterfaceName(_config.CoreBasicItem.BindInterface);
                 if (!bindInterface.IsNullOrEmpty())
                 {
                     tunInbound.settings.autoOutboundsInterface = bindInterface;
                 }
-                tunInbound.sniffing = inbound.sniffing;
+                tunInbound.sniffing = JsonUtils.DeepCopy(inbound.sniffing);
                 // tunInbound.sniffing.routeOnly = inbound.sniffing.routeOnly;
                 tunInbound.sniffing.routeOnly = true;
 
@@ -108,7 +106,7 @@ public partial class CoreConfigV2rayService
                         .Where(x => x != null).ToList();
 
                     var includeList = new List<IPNetwork2> { wholeInternet };
-                    var includeListV6 = context.HasGlobalIPv6Address
+                    var includeListV6 = routeIPv6
                         ? new List<IPNetwork2> { wholeInternetV6 }
                         : new List<IPNetwork2>();
 

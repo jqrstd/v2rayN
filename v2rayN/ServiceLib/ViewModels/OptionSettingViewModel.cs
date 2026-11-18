@@ -1,3 +1,5 @@
+
+
 namespace ServiceLib.ViewModels;
 
 public partial class OptionSettingViewModel : MyReactiveObject, ICloseable
@@ -51,7 +53,6 @@ public partial class OptionSettingViewModel : MyReactiveObject, ICloseable
     [Reactive] public partial bool EnableDragDropSort { get; set; }
     [Reactive] public partial bool DoubleClick2Activate { get; set; }
     [Reactive] public partial int AutoUpdateInterval { get; set; }
-    [Reactive] public partial int TrayMenuServersLimit { get; set; }
     [Reactive] public partial string CurrentFontFamily { get; set; }
     [Reactive] public partial int SpeedTestTimeout { get; set; }
     [Reactive] public partial string SpeedTestUrl { get; set; }
@@ -97,6 +98,7 @@ public partial class OptionSettingViewModel : MyReactiveObject, ICloseable
     [Reactive] public partial bool TunEnableIPv6Address { get; set; }
     [Reactive] public partial string TunIcmpRouting { get; set; }
     [Reactive] public partial bool TunEnableLegacyProtect { get; set; }
+    [Reactive] public partial string TunDnsMode { get; set; }
     [Reactive] public partial string TunRouteExcludeAddress { get; set; }
     [Reactive] public partial string TunIPv4Address { get; set; }
     [Reactive] public partial string TunIPv6Address { get; set; }
@@ -121,7 +123,7 @@ public partial class OptionSettingViewModel : MyReactiveObject, ICloseable
 
     public OptionSettingViewModel()
     {
-        _config = AppManager.Instance.Config;
+        _config = ConfigTextHandler.Config;
         BlIsWindows = Utils.IsWindows();
         BlIsLinux = Utils.IsLinux();
         BlIsIsMacOS = Utils.IsMacOS();
@@ -185,7 +187,6 @@ public partial class OptionSettingViewModel : MyReactiveObject, ICloseable
         EnableDragDropSort = _config.UiItem.EnableDragDropSort;
         DoubleClick2Activate = _config.UiItem.DoubleClick2Activate;
         AutoUpdateInterval = _config.GuiItem.AutoUpdateInterval;
-        TrayMenuServersLimit = _config.GuiItem.TrayMenuServersLimit;
         CurrentFontFamily = _config.UiItem.CurrentFontFamily;
         SpeedTestTimeout = _config.SpeedTestItem.SpeedTestTimeout;
         SpeedTestUrl = _config.SpeedTestItem.SpeedTestUrl;
@@ -222,6 +223,7 @@ public partial class OptionSettingViewModel : MyReactiveObject, ICloseable
         TunEnableIPv6Address = _config.TunModeItem.EnableIPv6Address;
         TunIcmpRouting = _config.TunModeItem.IcmpRouting;
         TunEnableLegacyProtect = _config.TunModeItem.EnableLegacyProtect;
+        TunDnsMode = _config.TunModeItem.DnsMode.NullIfEmpty() ?? Global.TunDnsModeDefault;
         TunRouteExcludeAddress = Utils.List2String(_config.TunModeItem.RouteExcludeAddress, true);
         TunIPv4Address = _config.TunModeItem.IPv4Address;
         TunIPv6Address = _config.TunModeItem.IPv6Address;
@@ -364,7 +366,6 @@ public partial class OptionSettingViewModel : MyReactiveObject, ICloseable
         _config.GuiItem.AutoUpdateInterval = AutoUpdateInterval;
         _config.UiItem.EnableDragDropSort = EnableDragDropSort;
         _config.UiItem.DoubleClick2Activate = DoubleClick2Activate;
-        _config.GuiItem.TrayMenuServersLimit = TrayMenuServersLimit;
         _config.UiItem.CurrentFontFamily = CurrentFontFamily;
         _config.SpeedTestItem.SpeedTestTimeout = SpeedTestTimeout;
         _config.SpeedTestItem.MixedConcurrencyCount = MixedConcurrencyCount;
@@ -395,6 +396,7 @@ public partial class OptionSettingViewModel : MyReactiveObject, ICloseable
         _config.TunModeItem.EnableIPv6Address = TunEnableIPv6Address;
         _config.TunModeItem.IcmpRouting = TunIcmpRouting;
         _config.TunModeItem.EnableLegacyProtect = TunEnableLegacyProtect;
+        _config.TunModeItem.DnsMode = TunDnsMode == Global.TunDnsModeDefault ? null : TunDnsMode;
         _config.TunModeItem.RouteExcludeAddress = Utils.String2List(TunRouteExcludeAddress);
         _config.TunModeItem.IPv4Address = TunIPv4Address;
         _config.TunModeItem.IPv6Address = TunIPv6Address;
@@ -402,7 +404,7 @@ public partial class OptionSettingViewModel : MyReactiveObject, ICloseable
         //coreType
         await SaveCoreType();
 
-        if (await ConfigHandler.SaveConfig(_config) == 0)
+        if (await ConfigTextHandler.SaveConfig() == 0)
         {
             await AutoStartupHandler.UpdateTask(_config);
             AppManager.Instance.Reset();

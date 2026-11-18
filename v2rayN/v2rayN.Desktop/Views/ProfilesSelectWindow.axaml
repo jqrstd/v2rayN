@@ -28,12 +28,12 @@
             Orientation="Horizontal">
             <Button
                 x:Name="btnSave"
-                Width="100"
+                MinWidth="100"
                 Content="{x:Static resx:ResUI.TbConfirm}"
                 IsDefault="True" />
             <Button
                 x:Name="btnCancel"
-                Width="100"
+                MinWidth="100"
                 Margin="{StaticResource MarginLr8}"
                 Content="{x:Static resx:ResUI.TbCancel}"
                 IsCancel="True" />
@@ -71,8 +71,9 @@
                         Width="200"
                         Margin="{StaticResource MarginLr4}"
                         VerticalContentAlignment="Center"
+                        PlaceholderText="{x:Static resx:ResUI.MsgServerTitle}"
                         Text="{Binding ServerFilter, Mode=TwoWay}"
-                        PlaceholderText="{x:Static resx:ResUI.MsgServerTitle}" />
+                        ToolTip.Tip="{x:Static resx:ResUI.MsgServerTitle}" />
                 </WrapPanel>
 
                 <!--  Profiles grid  -->
@@ -86,7 +87,8 @@
                     HeadersVisibility="All"
                     IsReadOnly="True"
                     ItemsSource="{Binding ProfileItems}"
-                    SelectionMode="Single">
+                    SelectionMode="Single"
+                    ShowRowNumbers="True">
                     <DataGrid.KeyBindings>
                         <KeyBinding Command="{Binding SelectFinish}" Gesture="Enter" />
                     </DataGrid.KeyBindings>

@@ -32,13 +32,13 @@
             Orientation="Horizontal">
             <Button
                 x:Name="btnSave"
-                Width="100"
+                MinWidth="100"
                 Content="{x:Static resx:ResUI.TbConfirm}"
                 IsDefault="True"
                 Style="{StaticResource DefButton}" />
             <Button
                 x:Name="btnCancel"
-                Width="100"
+                MinWidth="100"
                 Margin="{StaticResource MarginLeftRight8}"
                 Content="{x:Static resx:ResUI.TbCancel}"
                 IsCancel="true"
@@ -497,13 +497,14 @@
                             VerticalAlignment="Center"
                             Style="{StaticResource ToolbarTextBlock}"
                             Text="{x:Static resx:ResUI.TbSettingsBindInterface}" />
-                        <TextBox
+                        <ComboBox
                             x:Name="txtbindInterface"
                             Grid.Row="22"
                             Grid.Column="1"
                             Width="200"
                             Margin="{StaticResource Margin8}"
-                            Style="{StaticResource DefTextBox}" />
+                            IsEditable="True"
+                            Style="{StaticResource DefComboBox}" />
                         <TextBlock
                             Grid.Row="22"
                             Grid.Column="2"
@@ -950,22 +951,6 @@
                             Style="{StaticResource DefTextBox}" />
 
                         <TextBlock
-                            Grid.Row="14"
-                            Grid.Column="0"
-                            Margin="{StaticResource Margin8}"
-                            VerticalAlignment="Center"
-                            Style="{StaticResource ToolbarTextBlock}"
-                            Text="{x:Static resx:ResUI.TbSettingsTrayMenuServersLimit}" />
-                        <TextBox
-                            x:Name="txttrayMenuServersLimit"
-                            Grid.Row="14"
-                            Grid.Column="1"
-                            Width="200"
-                            Margin="{StaticResource Margin8}"
-                            HorizontalAlignment="Left"
-                            Style="{StaticResource DefTextBox}" />
-
-                        <TextBlock
                             Grid.Row="15"
                             Grid.Column="0"
                             Margin="{StaticResource Margin8}"
@@ -1277,6 +1262,7 @@
                             <RowDefinition Height="Auto" />
                             <RowDefinition Height="Auto" />
                             <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
                         </Grid.RowDefinitions>
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="Auto" />
@@ -1452,6 +1438,22 @@
                         <ComboBox
                             x:Name="cmbIpv6Address"
                             Grid.Row="11"
+                            Grid.Column="1"
+                            Width="200"
+                            Margin="{StaticResource Margin8}"
+                            HorizontalAlignment="Left"
+                            Style="{StaticResource DefComboBox}" />
+
+                        <TextBlock
+                            Grid.Row="12"
+                            Grid.Column="0"
+                            Margin="{StaticResource Margin8}"
+                            VerticalAlignment="Center"
+                            Style="{StaticResource ToolbarTextBlock}"
+                            Text="{x:Static resx:ResUI.TbSettingsTunDnsMode}" />
+                        <ComboBox
+                            x:Name="cmbDnsMode"
+                            Grid.Row="12"
                             Grid.Column="1"
                             Width="200"
                             Margin="{StaticResource Margin8}"
